@@ -4,80 +4,288 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mondrian Project</title>
-  <style>
-    /* 
-    Write your CSS here 
-    Gap Colour: #000
-    White: #F0F1EC
-    Red: #E72F24
-    Black: #232629
-    Blue: #004592
-    Yellow: #F9D01E
+  <title>Mondrian | The Exhibition</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-    For dimensions, see dimensions.png image.
-    HINT: Remember you can't change the properties of grid lines.
-    But grid lines are transparent!
+  <style>
+    /* --- RESET & GLOBAL STYLES --- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #1a1a1a; /* Dark museum backdrop */
+      color: #f0f1ec;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* --- SECTION 1: THE MUSEUM WALL (HERO) --- */
+    .gallery-wall {
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      /* Spotlight gradient effect on the wall */
+      background: radial-gradient(circle at center, #333333 0%, #1a1a1a 70%);
+      perspective: 1000px;
+    }
+
+    .artwork-wrapper {
+      position: relative;
+      /* Box shadow to simulate canvas depth off the wall */
+      box-shadow: 
+        0 20px 50px rgba(0,0,0,0.5), 
+        0 1px 3px rgba(0,0,0,0.3);
+      background-color: #000; /* Frame color */
+      padding: 10px; /* Frame thickness */
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+    }
+
+    /* Museum Label/Placard */
+    .placard {
+      position: absolute;
+      bottom: 50px;
+      right: 50px;
+      background-color: #f8f8f8;
+      color: #232629;
+      padding: 20px;
+      width: 250px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      font-family: 'Inter', sans-serif;
+      border-left: 4px solid #E72F24; /* Red accent */
+      z-index: 10;
+    }
+
+    .placard h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+
+    .placard p {
+      font-size: 0.8rem;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    /* .scroll-indicator {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0.6;
+      animation: bounce 2s infinite;
+    } */
+
+    /* --- YOUR MONDRIAN CSS (Unchanged logic, scoped to ID) --- */
+    /* Colors:
+      Gap Colour: #000
+      White: #F0F1EC
+      Red: #E72F24
+      Black: #232629
+      Blue: #004592
+      Yellow: #F9D01E
     */
-    #container{
+    #container {
       display: grid;
       height: 748px;
       width: 748px;
       grid-template-rows: 414px 130px 155px 20px;
-      grid-template-columns:320px 198px 153px 50px;
+      grid-template-columns: 320px 198px 153px 50px;
       gap: 9px;
       background-color: black;
-      width:fit-content;
-      margin-left: auto;
-      margin-right: auto;
-      
+      /* Removed margins to let Flexbox handle centering */
     }
-    .item{
-      background-color: #F0F1EC;
-    }
-    #red{
-      background-color: #E72F24;
-    }
-    #second{
-      grid-column: span 3;
-    }
-    #third{
-      grid-row:span 2;
-    }
-    #fourth{
-      grid-row:span 2;
-      grid-column: span 2;
 
+    .item { background-color: #F0F1EC; }
+    #red { background-color: #E72F24; }
+    #second { grid-column: span 3; }
+    #third { grid-row: span 2; }
+    #fourth { grid-row: span 2; grid-column: span 2; }
+    #sixth { grid-row: span 2; }
+    #fifth { 
+      background-color: #004592; 
+      /* Changed border to inset box-shadow to prevent sizing issues, 
+         or kept border but ensured box-sizing handles it */
+      border-bottom: 10px solid black; 
     }
-    #sixth{
-      grid-row:span 2;
+    #eigth { background-color: #F9D01E; }
+    #nineth { background-color: #232629; }
+
+    /* --- SECTION 2: ARTIST DETAILS --- */
+    .artist-section {
+      background-color: #F0F1EC;
+      color: #232629;
+      padding: 100px 10%;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 50px;
+      min-height: 100vh;
+      align-items: center;
     }
-    #fifth{
-      background-color: #004592;
-      border-bottom: 10px solid black;
-    }
-    #eigth{
-      background-color: #F9D01E;
-    }
-    #nineth{
+
+    .artist-image {
+      width: 100%;
+      height: 500px;
       background-color: #232629;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .artist-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%);
+    }
+
+    /* Decorative geometrical element over image */
+    .artist-image::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      width: 100px;
+      height: 100px;
+      background-color: #F9D01E;
+      z-index: 1;
+    }
+
+    .artist-info h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      margin-bottom: 10px;
+      color: #232629;
+    }
+
+    .artist-info .subtitle {
+      font-size: 1.2rem;
+      color: #E72F24; /* Mondrian Red */
+      margin-bottom: 30px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .artist-info p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      color: #4a4a4a;
+      max-width: 600px;
+    }
+
+    .quote {
+      border-left: 5px solid #004592; /* Mondrian Blue */
+      padding-left: 20px;
+      margin-top: 40px;
+      font-style: italic;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+    }
+
+    /* --- RESPONSIVE SCALING --- */
+    @media (max-width: 900px) {
+      /* Scales the painting down if the screen is too small for 748px */
+      .artwork-wrapper {
+        transform: scale(0.6); 
+      }
+      .placard {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        margin-top: -100px; /* Pull it up closer to scaled artwork */
+      }
+      .gallery-wall {
+        flex-direction: column;
+      }
+      .artist-section {
+        grid-template-columns: 1fr;
+        padding: 60px 20px;
+      }
+      .artist-image {
+        height: 300px;
+      }
+      .artist-info h1 {
+        font-size: 3rem;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .artwork-wrapper {
+        transform: scale(0.4); 
+      }
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
+      40% {transform: translateX(-50%) translateY(-10px);}
+      60% {transform: translateX(-50%) translateY(-5px);}
     }
   </style>
 </head>
 
 <body>
-  <!-- Write your HTML here -->
-  <div id="container">
-    <div class="item" id="red"></div>
-    <div class="item" id="second"></div>
-    <div class="item" id="third"></div>
-    <div class="item" id="fourth"></div>
-    <div class="item" id="fifth"></div>
-    <div class="item"  id="sixth"></div>
-    <div class="item"></div>
-    <div class="item"  id="eigth"></div>
-    <div class="item"   id="nineth"></div>
-  </div>
-</body>
 
+  <section class="gallery-wall">
+    
+    <div class="artwork-wrapper">
+      <div id="container">
+        <div class="item" id="red"></div>
+        <div class="item" id="second"></div>
+        <div class="item" id="third"></div>
+        <div class="item" id="fourth"></div>
+        <div class="item" id="fifth"></div>
+        <div class="item" id="sixth"></div>
+        <div class="item"></div>
+        <div class="item" id="eigth"></div>
+        <div class="item" id="nineth"></div>
+      </div>
+    </div>
+
+    <div class="placard">
+      <h2>Composition II</h2>
+      <p><strong>Piet Mondrian</strong><br>1930<br>Oil on Canvas</p>
+      <hr style="border: 0; border-top: 1px solid #ddd; margin: 10px 0;">
+      <p>A seminal example of De Stijl, balancing primary colors and black grids to achieve pure abstraction.</p>
+    </div>
+
+    <!-- <div class="scroll-indicator" style="color:white; font-size: 0.8rem; letter-spacing: 2px;">
+      SCROLL FOR DETAILS
+    </div> -->
+
+  </section>
+
+  <section class="artist-section">
+    <div class="artist-image">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Piet_Mondriaan.jpg" alt="Piet Mondrian Portrait">
+    </div>
+    
+    <div class="artist-info">
+      <h1>Piet Mondrian</h1>
+      <div class="subtitle">The Architect of Abstraction</div>
+      
+      <p>
+        Pieter Cornelis Mondriaan was a Dutch painter and theoretician who is regarded as one of the greatest artists of the 20th century. He is known for being one of the pioneers of 20th-century abstract art, as he changed his artistic direction from figurative painting to an increasingly abstract style.
+      </p>
+      <p>
+        His art was not just about lines and colors, but a spiritual pursuit of universal harmony. He termed his style "Neoplasticism," focusing on the reduction of form to its most basic elements: straight lines, right angles, and primary colors.
+      </p>
+
+      <div class="quote">
+        "I wish to approach truth as closely as is possible, and therefore I abstract everything until I arrive at the fundamental quality of objects."
+      </div>
+    </div>
+  </section>
+
+</body>
 </html>
